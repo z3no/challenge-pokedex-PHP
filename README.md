@@ -28,3 +28,6 @@ PHP has very good documentation available on www.php.net. There is a nice trick 
 
 ## `PHP the right way`
 Another interesting read is http://phptherightway.com. This is not so much documentation over each separate function, but gives you more an overview of best practices and how different components work together.
+
+## `Getting started`
+I think I will first look into the documentation of php.net and phptherightway.com and see how I should takle this step by step. I can re-use a lot of code from my previously made Pokédex, so let's take some time to read and take it step by step.
