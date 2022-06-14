@@ -8,7 +8,19 @@
 </head>
 
 <body>
+<?php
+    //POKEMON API URL
+    $api_url = 'https://pokeapi.co/api/v2/pokemon/';
 
+    //READ THE JSON FILE
+    $json_data = file_get_contents($api_url);
+
+    //DECODE JSON DATA INTO PHP ARRAY
+    $response_data = json_decode($json_data, true);
+
+    var_dump($response_data);
+
+?>
         <section class="logo">
             <img src="images/pokemon-logo.png" alt="Pokémon logo">
         </section>
