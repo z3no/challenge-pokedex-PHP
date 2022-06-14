@@ -51,9 +51,21 @@
         </section>
 
         <section>
-            <?php
-                echo $pokemon_name;
-            ?>
+            <p>
+                <?php
+                    echo $pokemon_name;
+                ?>
+            </p>
+            <p>
+                <?php
+                    echo $pokemon_id;
+                ?>
+            </p>
+            <p>
+                <?php
+                    echo $pokemon_moves[0].'<br>'.$pokemon_moves[1].'<br>'.$pokemon_moves[2].'<br>'.$pokemon_moves[3];
+                ?>
+            </p>
         </section>
 
         <section class="display">
