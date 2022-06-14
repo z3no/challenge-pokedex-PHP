@@ -9,16 +9,32 @@
 
 <body>
 <?php
+
     //POKEMON API URL
-    $api_url = 'https://pokeapi.co/api/v2/pokemon/';
+    $api_url = "https://pokeapi.co/api/v2/pokemon/";
+
+    //TEST WITH ID VARIABLE
+    $id = 2;
 
     //READ THE JSON FILE
-    $json_data = file_get_contents($api_url);
+    $json_data = file_get_contents($api_url.$id.'/');
 
     //DECODE JSON DATA INTO PHP ARRAY
-    $response_data = json_decode($json_data, true);
+    $pokemon_response = json_decode($json_data);
 
-    var_dump($response_data);
+    //THE POKEMON NAME
+    $pokemon_name = $pokemon_response->name;
+    var_dump($pokemon_name);
+    //THE POKEMON ID
+    $pokemon_id = $pokemon_response->id;
+    var_dump($pokemon_id);
+    //THE POKEMON MOVES
+    $pokemon_moves = [];
+    for ($i = 0; $i < 4; $i++){
+        $pokemon_move = $pokemon_response->moves[$i]->move->name;
+        array_push($pokemon_moves, $pokemon_move);
+    }
+    var_dump($pokemon_moves);
 
 ?>
         <section class="logo">
@@ -26,10 +42,18 @@
         </section>
 
         <section class="search">
-            <input type="text" name="pokemon" id="pokemon" placeholder="ID or Name"/>
-            <div class="actions">
-                <button type="button" id="search">Search</button>
-            </div>
+            <form action="" method="post">
+                <input type="text" id="pokemon" name="pokemonIdName" placeholder="ID or Name"/>
+                <div class="actions">
+                    <button type="button" id="search" value="search" name="searchPokemon">Search</button>
+                </div>
+            </form>
+        </section>
+
+        <section>
+            <?php
+                echo $pokemon_name;
+            ?>
         </section>
 
         <section class="display">
