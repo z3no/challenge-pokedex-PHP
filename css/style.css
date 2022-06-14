@@ -24,6 +24,9 @@ body {
   justify-content: center;
   align-items: center;
 }
+.logo img {
+  height: 100%;
+}
 
 .search {
   width: 100%;
@@ -60,7 +63,7 @@ button {
   background-color: #8EBF9F;
   border-radius: 20px;
   overflow: hidden;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
 .display .card:before {
   content: "";
@@ -143,12 +146,10 @@ button {
   display: flex;
   justify-content: left;
   align-items: center;
-  padding: 8px 20px;
   transition: 0.5s;
   opacity: 0;
   visibility: hidden;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding: 0 20px;
   margin-top: 16px;
 }
 .display .card .cardContent .id h2,
