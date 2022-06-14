@@ -31,3 +31,5 @@ Another interesting read is http://phptherightway.com. This is not so much docum
 
 ## `Getting started`
 I think I will first look into the documentation of php.net and phptherightway.com and see how I should takle this step by step. I can re-use a lot of code from my previously made Pokédex, so let's take some time to read and take it step by step.
+
+1) So first I copied the html file from my previous Pokédex and renamed the index.html to index.php. I put the files into the becode.localhost we made yesterday, there I can see the new repo I made with index.php, so it shows all the styling I had before and now I have to make sure the JavaScript code I used is replaced with php to make everything work.
