@@ -20,21 +20,24 @@
     $json_data = file_get_contents($api_url.$id.'/');
 
     //DECODE JSON DATA INTO PHP ARRAY
-    $pokemon_response = json_decode($json_data);
+    $pokemon_response = json_decode($json_data, true);
 
     //THE POKEMON NAME
-    $pokemon_name = $pokemon_response->name;
+    $pokemon_name = $pokemon_response['forms']['0']['name'];
     var_dump($pokemon_name);
     //THE POKEMON ID
-    $pokemon_id = $pokemon_response->id;
+    $pokemon_id = $pokemon_response['id'];
     var_dump($pokemon_id);
     //THE POKEMON MOVES
     $pokemon_moves = [];
     for ($i = 0; $i < 4; $i++){
-        $pokemon_move = $pokemon_response->moves[$i]->move->name;
+        $pokemon_move = $pokemon_response['moves'][$i]['move']['name'];
         array_push($pokemon_moves, $pokemon_move);
     }
     var_dump($pokemon_moves);
+    //THE POKEMON IMAGE
+    $pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
+    var_dump($pokemon_image);
 
 ?>
         <section class="logo">
@@ -66,6 +69,7 @@
                     echo $pokemon_moves[0].'<br>'.$pokemon_moves[1].'<br>'.$pokemon_moves[2].'<br>'.$pokemon_moves[3];
                 ?>
             </p>
+            <img src="<?php echo $pokemon_image ?>">
         </section>
 
         <section class="display">
