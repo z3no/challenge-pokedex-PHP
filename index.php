@@ -35,10 +35,16 @@
             $pokemon_id = $pokemon_response['id'];
 
             $pokemon_moves = [];
-            for ($i = 0; $i < 4; $i++) {
-                $pokemon_move = $pokemon_response['moves'][$i]['move']['name'];
-                array_push($pokemon_moves, $pokemon_move);
+            if (count($pokemon_response['moves']) > 1){
+                for ($i = 0; $i < 4; $i++) {
+                    $pokemon_move = $pokemon_response['moves'][$i]['move']['name'];
+                    array_push($pokemon_moves, $pokemon_move);
+                }
+            } else if (count($pokemon_response['moves']) === 1){
+                $pokemon_one_move = $pokemon_response['moves']['0']['move']['name'];
+                array_push($pokemon_moves, $pokemon_one_move);
             }
+
             $moves = implode(" ", $pokemon_moves); //makes a string of the array
 
             $pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
