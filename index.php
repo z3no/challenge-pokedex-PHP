@@ -11,16 +11,34 @@
 <?php
 
     //POKEMON API URL
-    $api_url = "https://pokeapi.co/api/v2/pokemon/";
+    //$api_url = "https://pokeapi.co/api/v2/pokemon/";
 
     //TEST WITH ID VARIABLE
     //$id = 2;
 
     //TEST WITH FORM DATA
-    $id_name = "";
+    $id_name = $pokemon_name = $pokemon_id = $pokemon_image = $moves = $visible = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $id_name = test_input($_POST["nameIDPoke"]);
+
+        $api_url = "https://pokeapi.co/api/v2/pokemon/";
+        $json_data = file_get_contents($api_url.$id_name.'/');
+        $pokemon_response = json_decode($json_data, true);
+
+        $visible = 'visible';
+
+        $pokemon_name = $pokemon_response['forms']['0']['name'];
+        $pokemon_id = $pokemon_response['id'];
+
+        $pokemon_moves = [];
+        for ($i = 0; $i < 4; $i++){
+            $pokemon_move = $pokemon_response['moves'][$i]['move']['name'];
+            array_push($pokemon_moves, $pokemon_move);
+        }
+        $moves = implode(" ", $pokemon_moves); //makes a string of the array
+
+        $pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
     }
 
     function test_input ($data) {
@@ -31,26 +49,26 @@
     }
 
     //READ THE JSON FILE
-    $json_data = file_get_contents($api_url.$id_name.'/');
+    //$json_data = file_get_contents($api_url.$id_name.'/');
 
     //DECODE JSON DATA INTO PHP ARRAY
-    $pokemon_response = json_decode($json_data, true);
+    //$pokemon_response = json_decode($json_data, true);
 
     //THE POKEMON NAME
-    $pokemon_name = $pokemon_response['forms']['0']['name'];
+    //$pokemon_name = $pokemon_response['forms']['0']['name'];
     //var_dump($pokemon_name);
     //THE POKEMON ID
-    $pokemon_id = $pokemon_response['id'];
+    //$pokemon_id = $pokemon_response['id'];
     //var_dump($pokemon_id);
     //THE POKEMON MOVES
-    $pokemon_moves = [];
+    /*$pokemon_moves = [];
     for ($i = 0; $i < 4; $i++){
         $pokemon_move = $pokemon_response['moves'][$i]['move']['name'];
         array_push($pokemon_moves, $pokemon_move);
-    }
+    }*/
     //var_dump($pokemon_moves);
     //THE POKEMON IMAGE
-    $pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
+    //$pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
     //var_dump($pokemon_image);
 
 ?>
@@ -67,7 +85,7 @@
             </form>
         </section>
 
-        <section>
+        <!--<section>
             <p>
                 <?php
                     echo $pokemon_name;
@@ -80,28 +98,28 @@
             </p>
             <p>
                 <?php
-                    echo $pokemon_moves[0].'<br>'.$pokemon_moves[1].'<br>'.$pokemon_moves[2].'<br>'.$pokemon_moves[3];
+                    echo $moves;
                 ?>
             </p>
-            <img src="<?php echo $pokemon_image ?>">
-        </section>
+            <img src="<?php echo $pokemon_image ?>" alt="Pokemon Image">
+        </section>-->
 
-        <section class="display">
+        <section class="display hidden <?php echo $visible ?>">
 
             <div class="card">
-                <div class="imageContainer" id="pokemonImageContainer"></div>
+                <div class="imageContainer" id="pokemonImageContainer"><img src="<?php echo $pokemon_image ?>" alt="Pokemon Image"></div>
 
                 <div class="cardContent">
-                    <h1 id="pokemonName"></h1>
+                    <h1 id="pokemonName"><?php echo $pokemon_name; ?></h1>
 
                     <div class="id">
                         <h2>ID : </h2>
-                        <span id="pokemonID"></span>
+                        <span id="pokemonID"><?php echo $pokemon_id; ?></span>
                     </div>
 
                     <div class="moves">
                         <h2>Moves :</h2>
-                        <span id="pokemonMoves"></span>
+                        <span id="pokemonMoves"><?php echo $moves; ?></span>
                     </div>
                 </div>
             </div>
