@@ -31,14 +31,19 @@
         $pokemon_name = $pokemon_response['forms']['0']['name'];
         $pokemon_id = $pokemon_response['id'];
 
-        $pokemon_moves = [];
+        /*$pokemon_moves = [];
         for ($i = 0; $i < 4; $i++){
             $pokemon_move = $pokemon_response['moves'][$i]['move']['name'];
             array_push($pokemon_moves, $pokemon_move);
         }
         $moves = implode(" ", $pokemon_moves); //makes a string of the array
+        */
+        //$pokemon_moves = $pokemon_response['moves'][0]['move']['name'];
 
         $pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
+
+        $species_url = $pokemon_response['species']['url'];
+        $species = file_get_contents($species_url);
     }
 
     function test_input ($data) {
@@ -119,7 +124,13 @@
 
                     <div class="moves">
                         <h2>Moves :</h2>
-                        <span id="pokemonMoves"><?php echo $moves; ?></span>
+                        <span id="pokemonMoves">
+                            <?php
+                                if (isset($_POST["nameIDPoke"])) {
+                                    for ($i = 0; $i < 4; $i++){
+                                        echo $pokemon_response['moves'][$i]['move']['name'];
+                                    }
+                                } ?></span>
                     </div>
                 </div>
             </div>
