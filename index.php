@@ -14,30 +14,44 @@
     $api_url = "https://pokeapi.co/api/v2/pokemon/";
 
     //TEST WITH ID VARIABLE
-    $id = 2;
+    //$id = 2;
+
+    //TEST WITH FORM DATA
+    $id_name = "";
+
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $id_name = test_input($_POST["nameIDPoke"]);
+    }
+
+    function test_input ($data) {
+        $data = trim($data);
+        $data = stripslashes($data);
+        $data = htmlspecialchars($data);
+        return $data;
+    }
 
     //READ THE JSON FILE
-    $json_data = file_get_contents($api_url.$id.'/');
+    $json_data = file_get_contents($api_url.$id_name.'/');
 
     //DECODE JSON DATA INTO PHP ARRAY
     $pokemon_response = json_decode($json_data, true);
 
     //THE POKEMON NAME
     $pokemon_name = $pokemon_response['forms']['0']['name'];
-    var_dump($pokemon_name);
+    //var_dump($pokemon_name);
     //THE POKEMON ID
     $pokemon_id = $pokemon_response['id'];
-    var_dump($pokemon_id);
+    //var_dump($pokemon_id);
     //THE POKEMON MOVES
     $pokemon_moves = [];
     for ($i = 0; $i < 4; $i++){
         $pokemon_move = $pokemon_response['moves'][$i]['move']['name'];
         array_push($pokemon_moves, $pokemon_move);
     }
-    var_dump($pokemon_moves);
+    //var_dump($pokemon_moves);
     //THE POKEMON IMAGE
     $pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
-    var_dump($pokemon_image);
+    //var_dump($pokemon_image);
 
 ?>
         <section class="logo">
@@ -45,10 +59,10 @@
         </section>
 
         <section class="search">
-            <form action="" method="post">
-                <input type="text" id="pokemon" name="pokemonIdName" placeholder="ID or Name"/>
+            <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
+                <input type="text" id="pokemon" name="nameIDPoke" placeholder="ID or Name"/>
                 <div class="actions">
-                    <button type="button" id="search" value="search" name="searchPokemon">Search</button>
+                    <button type="submit" id="search" value="search" name="searchPokemon">Search</button>
                 </div>
             </form>
         </section>
