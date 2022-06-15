@@ -17,33 +17,35 @@
     //$id = 2;
 
     //TEST WITH FORM DATA
-    $id_name = $pokemon_name = $pokemon_id = $pokemon_image = $moves = $visible = "";
+    $id_name = $pokemon_name = $pokemon_id = $pokemon_image = $moves = $visible = $name_ID_error = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
-        $id_name = test_input($_POST["nameIDPoke"]);
+        if (empty($_POST["nameIDPoke"])) {
+            $name_ID_error = "Name is required";
+        } else {
+            $id_name = test_input($_POST["nameIDPoke"]);
 
-        $api_url = "https://pokeapi.co/api/v2/pokemon/";
-        $json_data = file_get_contents($api_url.$id_name.'/');
-        $pokemon_response = json_decode($json_data, true);
+            $api_url = "https://pokeapi.co/api/v2/pokemon/";
+            $json_data = file_get_contents($api_url . $id_name . '/');
+            $pokemon_response = json_decode($json_data, true);
 
-        $visible = 'visible';
+            $visible = 'visible';
 
-        $pokemon_name = $pokemon_response['forms']['0']['name'];
-        $pokemon_id = $pokemon_response['id'];
+            $pokemon_name = $pokemon_response['forms']['0']['name'];
+            $pokemon_id = $pokemon_response['id'];
 
-        /*$pokemon_moves = [];
-        for ($i = 0; $i < 4; $i++){
-            $pokemon_move = $pokemon_response['moves'][$i]['move']['name'];
-            array_push($pokemon_moves, $pokemon_move);
+            $pokemon_moves = [];
+            for ($i = 0; $i < 4; $i++) {
+                $pokemon_move = $pokemon_response['moves'][$i]['move']['name'];
+                array_push($pokemon_moves, $pokemon_move);
+            }
+            $moves = implode(" ", $pokemon_moves); //makes a string of the array
+
+            $pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
+
+            $species_url = $pokemon_response['species']['url'];
+            $species = file_get_contents($species_url);
         }
-        $moves = implode(" ", $pokemon_moves); //makes a string of the array
-        */
-        //$pokemon_moves = $pokemon_response['moves'][0]['move']['name'];
-
-        $pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
-
-        $species_url = $pokemon_response['species']['url'];
-        $species = file_get_contents($species_url);
     }
 
     function test_input ($data) {
@@ -84,6 +86,7 @@
         <section class="search">
             <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
                 <input type="text" id="pokemon" name="nameIDPoke" placeholder="ID or Name"/>
+                <span class="error">* <?php echo $name_ID_error;?></span>
                 <div class="actions">
                     <button type="submit" id="search" value="search" name="searchPokemon">Search</button>
                 </div>
@@ -124,13 +127,7 @@
 
                     <div class="moves">
                         <h2>Moves :</h2>
-                        <span id="pokemonMoves">
-                            <?php
-                                if (isset($_POST["nameIDPoke"])) {
-                                    for ($i = 0; $i < 4; $i++){
-                                        echo $pokemon_response['moves'][$i]['move']['name'];
-                                    }
-                                } ?></span>
+                        <span id="pokemonMoves"><?php echo $moves; ?></span>
                     </div>
                 </div>
             </div>
