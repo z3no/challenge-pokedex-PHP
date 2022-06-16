@@ -17,7 +17,7 @@
     //$id = 2;
 
     //TEST WITH FORM DATA
-    $id_name = $pokemon_name = $pokemon_id = $pokemon_image = $moves = $visible = $name_ID_error = "";
+    $id_name = $pokemon_name = $pokemon_id = $pokemon_image = $moves = $visible = $name_ID_error = $evolutions = "";
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (empty($_POST["nameIDPoke"])) {
@@ -26,7 +26,7 @@
             $id_name = test_input($_POST["nameIDPoke"]);
 
             $api_url = "https://pokeapi.co/api/v2/pokemon/";
-            $json_data = file_get_contents($api_url . $id_name . '/');
+            $json_data = file_get_contents($api_url . strtolower($id_name) . '/');
             $pokemon_response = json_decode($json_data, true);
 
             $visible = 'visible';
@@ -49,8 +49,20 @@
 
             $pokemon_image = $pokemon_response['sprites']['other']['home']['front_default'];
 
+            //POKEMON SPECIES
             $species_url = $pokemon_response['species']['url'];
             $species = file_get_contents($species_url);
+            $species_response = json_decode($species, true);
+            //POKEMON EVOLUTION CHAIN
+            $evolution_chain_url = $species_response['evolution_chain']['url'];
+            $evolution_chain = file_get_contents($evolution_chain_url);
+            $evolution_chain_response = json_decode($evolution_chain, true);
+            //POKEMON EVOLUTIONS
+
+            $pokemon_born_form = $evolution_chain_response['chain']['species']['name'];
+            $pokemon_first_evolution = $evolution_chain_response['chain']['evolves_to']['0']['species']['name'];
+            $pokemon_second_evolution = $evolution_chain_response['chain']['evolves_to']['0']['evolves_to']['0']['species']['name'];
+
         }
     }
 
@@ -139,7 +151,11 @@
             </div>
 
             <div class="evolutionContainer">
-                <span id="firstForm"></span>
+                <span id="firstForm"> <?php
+                    echo $pokemon_born_form;
+                    echo $pokemon_first_evolution;
+                    echo $pokemon_second_evolution;
+                    ?></span>
                 <span id="firstEvolution"></span>
                 <span id="secondEvolution"></span>
             </div>
