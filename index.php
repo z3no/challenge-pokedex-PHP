@@ -58,13 +58,28 @@
             $evolution_chain = file_get_contents($evolution_chain_url);
             $evolution_chain_response = json_decode($evolution_chain, true);
             //POKEMON EVOLUTIONS
-
-            $pokemon_born_form = $evolution_chain_response['chain']['species']['name'];
-            $pokemon_first_evolution = $evolution_chain_response['chain']['evolves_to']['0']['species']['name'];
-            $pokemon_second_evolution = $evolution_chain_response['chain']['evolves_to']['0']['evolves_to']['0']['species']['name'];
             $evolutions_array = [];
-            $evolutions = array_push($evolutions_array, $pokemon_born_form, $pokemon_first_evolution, $pokemon_second_evolution);
+            $pokemon_born_form = $evolution_chain_response['chain']['species']['name'];
+            array_push($evolutions_array, $pokemon_born_form);
+            if(count($evolution_chain_response['chain']['evolves_to']) > 0){
+                $pokemon_first_evolution = $evolution_chain_response['chain']['evolves_to']['0']['species']['name'];
+                array_push($evolutions_array, $pokemon_first_evolution);
+                //EEVEE
+                if(count($evolution_chain_response['chain']['evolves_to']) > 1){
+                    for ($i = 0; $i < 8; $i++) {
+                        $pokemon_eevee_evolution = $evolution_chain_response['chain']['evolves_to'][$i]['species']['name'];
+                        array_push($evolutions_array, $pokemon_eevee_evolution);
+                    }
+                }
+            }
+            if(count($evolution_chain_response['chain']['evolves_to']['0']['evolves_to']) > 0){
+                $pokemon_second_evolution = $evolution_chain_response['chain']['evolves_to']['0']['evolves_to']['0']['species']['name'];
+                array_push($evolutions_array, $pokemon_second_evolution);
+            }
+            //$evolutions = array_push($evolutions_array, $pokemon_born_form, $pokemon_first_evolution, $pokemon_second_evolution);
             $evolve = implode(" ", $evolutions_array);
+
+
         }
     }
 
