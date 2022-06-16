@@ -62,7 +62,9 @@
             $pokemon_born_form = $evolution_chain_response['chain']['species']['name'];
             $pokemon_first_evolution = $evolution_chain_response['chain']['evolves_to']['0']['species']['name'];
             $pokemon_second_evolution = $evolution_chain_response['chain']['evolves_to']['0']['evolves_to']['0']['species']['name'];
-
+            $evolutions_array = [];
+            $evolutions = array_push($evolutions_array, $pokemon_born_form, $pokemon_first_evolution, $pokemon_second_evolution);
+            $evolve = implode(" ", $evolutions_array);
         }
     }
 
@@ -152,9 +154,10 @@
 
             <div class="evolutionContainer">
                 <span id="firstForm"> <?php
-                    echo $pokemon_born_form;
-                    echo $pokemon_first_evolution;
-                    echo $pokemon_second_evolution;
+                    //echo $pokemon_born_form;
+                    //echo $pokemon_first_evolution;
+                    //echo $pokemon_second_evolution;
+                    echo $evolve;
                     ?></span>
                 <span id="firstEvolution"></span>
                 <span id="secondEvolution"></span>
